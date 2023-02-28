@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate,login,logout
 # Create your views here.
 
 def home(request):
@@ -49,4 +50,19 @@ def signup(request):
     return render(request,"signup.html")
 
 def handlelogin(request):
+    if request.method=="POST":
+        username=request.POST.get('userumber')
+        pass1=request.POST.get('pass1')
+        myuser=authenticate(username=username,password=pass1)
+        if myuser is not None:
+            messages.success(request,"Login Successful")
+            return redirect('/')
+        else:
+            messages.error(request,"Invalid Credentails")
+            return redirect('/login')
+
+
+
     return render(request,"handlelogin.html")
+
+
